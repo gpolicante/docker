@@ -7,7 +7,7 @@
        name:
          - bind9 
          - git
-         - postgresql
+         - mariadb-server
 
    - name: baixando os arquivos de configuracao do bind 
      git:
@@ -31,4 +31,4 @@
        state: restarted
      with_items:
       - bind9 
-      - postgresql
+      - mysql
