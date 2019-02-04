@@ -1,0 +1,34 @@
+
+- hosts: ragnar
+  become: true 
+  tasks:
+   - name: instalando pacotes bases bind e git 
+     package:
+       name:
+         - bind9 
+         - git
+         - postgresql
+
+   - name: baixando os arquivos de configuracao do bind 
+     git:
+      repo: 'https://github.com/gpolicante/dexterdns.git'
+      dest: /tmp/repo/
+
+
+   - name: copiando arquivos para o bind 
+     copy: 
+       src: "{{item.origem}}"
+       dest: "{{item.destino}}"
+       remote_src: yes
+     with_items:
+      - {origem: /tmp/repo/db.dexter.com.br, destino: /var/cache/bind/ }
+      - {origem: /tmp/repo/named.conf.local, destino: /etc/bind/ }
+      - {origem: /tmp/repo/named.conf.options, destino: /etc/bind/ }
+
+   - name: restart no bind 
+     service:
+       name: "{{item}}"
+       state: restarted
+     with_items:
+      - bind9 
+      - postgresql
