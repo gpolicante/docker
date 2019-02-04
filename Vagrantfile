@@ -9,6 +9,9 @@ Vagrant.configure("2") do |config|
         vb.memory = "2048"
         end
 
+    manager.vm.provision "shell", inline: <<-SHELL
+	echo "nameserver 192.168.33.153" > /etc/resolv.conf 
+	SHELL
 
 
         end
@@ -25,6 +28,9 @@ Vagrant.configure("2") do |config|
         end
 
  
+    worker1.vm.provision "shell", inline: <<-SHELL
+	echo "nameserver 192.168.33.153" > /etc/resolv.conf 
+	SHELL
 
   end
 
@@ -37,6 +43,12 @@ Vagrant.configure("2") do |config|
        config.vm.provider "virtualbox" do |vb|
         vb.memory = "1024"
         end
+
+    worker2.vm.provision "shell", inline: <<-SHELL
+	echo "nameserver 192.168.33.153" > /etc/resolv.conf 
+	SHELL
+
+
 end
 
    config.vm.define "ragnar" do |ragnar|
